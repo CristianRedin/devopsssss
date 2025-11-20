@@ -3,7 +3,7 @@ name: Deploy AMSG Desde Cero
 on:
   push:
     branches: 
-      - cristian
+      - cristian2
 
 permissions:
   contents: read
