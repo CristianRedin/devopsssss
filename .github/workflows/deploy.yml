@@ -1,0 +1,110 @@
+name: Deploy AMSG Desde Cero
+
+on:
+  push:
+    branches: 
+      - cristian
+
+permissions:
+  contents: read
+  packages: write
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and Push Docker image
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        push: true
+        tags: ghcr.io/CristianRedin/devopsssss:1.0.0
+
+
+    - name: Mostrar variables basicas
+      run: |
+        echo "Probando conexion SSH con:"
+        echo "Host: ${{ secrets.VPS_HOST }}"
+        echo "Usuario: ${{ secrets.VPS_USER }}"
+        echo "Puerto: ${{ secrets.VPS_SSH_PORT }}"
+        echo "Password: ${{ secrets.VPS_PASSWORD }}"
+
+    - name:  Deploy con eliminacion del stack
+      uses: appleboy/ssh-action@v1
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_SSH_PORT }}
+        script:
+          echo "Conexion con ¡ÉXITO! desde Github Actions"
+          hostname
+          whoami
+          uptime
+
+    - name:  Pasar con copia del stack al servidor
+      uses: appleboy/scp-action@v1
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_SSH_PORT }}
+        source: "stack.yml"
+        target: "/home/${{ secrets.VPS_USER}}/despliegue"
+
+    - name:  Despliegue de los servicios
+      uses: appleboy/ssh-action@v1
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        password: ${{ secrets.VPS_PASSWORD }}
+        port: ${{ secrets.VPS_SSH_PORT }}
+        script: |
+          echo "Despliegu de servicios"
+          cd ~/despliegue
+
+          # Paso 1 desargar la imagen 
+          # echo del GHCR"
+
+          
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u paul1578 --password-stdin
+
+          docker pull ghcr.io/CristianRedin/devopsssss:1.0.0
+
+
+          
+          # Paso 2 borrar el stack
+          docker stack rm cristhian || true
+
+          sleep 30
+
+          # paso 3 Desplegar los servicios
+
+          echo "==> Desplegando Stack <=="
+
+          docker stack deploy -c stack.yml --with-registry-auth cristhian
+
+     
+
+          
+
+          
+
+
+
+      
