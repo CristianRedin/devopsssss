@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   cristianredin:
-    image: ghcr.io/CristianRedin/devopsssss:1.0.0
+    image: ghcr.io/cristianredin/devopsssss:1.0.0
 
     deploy:
       replicas: 1
