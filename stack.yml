@@ -23,7 +23,7 @@ services:
         - "traefik.http.routers.cristianredin-secure.service=cristianredin"
 
         # Puerto interno del contenedor
-        - "traefik.http.services.cristianredin.loadbalancer.server.port=3000"
+        - "traefik.http.services.cristianredin.loadbalancer.server.port=80"
 
         # Red pública de traefik
         - "traefik.docker.network=traefik-public"
