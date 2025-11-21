@@ -22,8 +22,8 @@ services:
         - "traefik.http.routers.cristianredin-secure.tls.certresolver=letsencrypt"
         - "traefik.http.routers.cristianredin-secure.service=cristianredin"
 
-        # Puerto interno del contenedor
-        - "traefik.http.services.cristianredin.loadbalancer.server.port=8560"
+        # --- ESTO DEBE SER 4000 (Según tus logs anteriores) ---
+        - "traefik.http.services.cristianredin.loadbalancer.server.port=4000"
 
         # Red pública de traefik
         - "traefik.docker.network=traefik-public"
