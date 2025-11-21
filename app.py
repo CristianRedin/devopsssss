@@ -8,21 +8,21 @@ HTML = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMSG DevOps Mejorado</title>
+    <title>Mi Proyecto DevOps</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
 <div class="container py-5">
     <div class="card shadow p-4" style="max-width: 600px; margin:auto;">
-        <h2 class="text-center mb-4">Proyecto AMSG DevOps Mejorado</h2>
+        <h2 class="text-center mb-4">Bienvenido a Mi Proyecto DevOps</h2>
 
         <form method="POST" action="/">
-            <label class="form-label">Ingrese su nombre:</label>
+            <label class="form-label">Escribe tu nombre:</label>
             <input name="nombre" class="form-control mb-3" required />
 
             <div class="d-flex gap-2">
-                <button class="btn btn-primary w-50" name="accion" value="saludar">Enviar</button>
+                <button class="btn btn-primary w-50" name="accion" value="saludar">Saludar</button>
                 <button class="btn btn-secondary w-50" name="accion" value="limpiar">Limpiar</button>
             </div>
         </form>
@@ -48,7 +48,7 @@ def home():
         nombre = request.form.get("nombre")
 
         if accion == "saludar":
-            mensaje = f"Hola {nombre}. Bienvenido al proyecto AMSG DevOps."
+            mensaje = f"Hola {nombre}. Bienvenido a Mi Proyecto DevOps."
         elif accion == "limpiar":
             mensaje = "El formulario ha sido limpiado correctamente."
 
